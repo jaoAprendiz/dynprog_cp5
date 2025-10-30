@@ -1,7 +1,8 @@
+import time
+
 # =============================================================================
 # CÓDIGO 1 - ALGORITMO GULOSO (GREEDY)
 # =============================================================================
-# ATENÇÃO: Este código possui ERROS:
 # Funcionamento: Ordena as moedas em ordem decrescente e tenta usar
 # sempre a maior moeda possível (abordagem gulosa).
 # Complexidade: O(n log n) para ordenação + O(n) para iteração
@@ -33,19 +34,38 @@ def qtdMoedas(m, moedas):
     return qtd
 
 # PRINTS DE TESTE - CÓDIGO 1
-print("=" * 60)
-print("CÓDIGO 1 - ALGORITMO GULOSO (COM ERROS)")
-print("=" * 60)
+print("=" * 70)
+print("CÓDIGO 1 - ALGORITMO GULOSO")
+print("=" * 70)
 
 print("Teste 1: qtdMoedas(17, [5, 2, 1])")
-print(f"Resultado: {qtdMoedas(17, [5, 2, 1])} moedas\n")
+inicio = time.time()
+resultado = qtdMoedas(17, [5, 2, 1])
+fim = time.time()
+print(f"Resultado: {resultado} moedas")
+print(f"Tempo de execução: {fim - inicio:.10f} segundos\n")
 
 print("Teste 2: qtdMoedas(6, [1, 3, 4])")
-print(f"Resultado: {qtdMoedas(6, [1, 3, 4])} moedas\n")
+inicio = time.time()
+resultado = qtdMoedas(6, [1, 3, 4])
+fim = time.time()
+print(f"Resultado: {resultado} moedas")
+print(f"Tempo de execução: {fim - inicio:.10f} segundos\n")
 
 print("Teste 3: qtdMoedas(11, [1, 5, 6])")
-print(f"Resultado: {qtdMoedas(11, [1, 5, 6])} moedas")
+inicio = time.time()
+resultado = qtdMoedas(11, [1, 5, 6])
+fim = time.time()
+print(f"Resultado: {resultado} moedas")
+print(f"Tempo de execução: {fim - inicio:.10f} segundos")
 print("(Guloso pode não dar resultado ótimo!)\n")
+
+print("🎯 TESTE COM 35 MOEDAS: qtdMoedas(35, [1, 5, 10, 25])")
+inicio = time.time()
+resultado = qtdMoedas(35, [1, 5, 10, 25])
+fim = time.time()
+print(f"Resultado: {resultado} moedas")
+print(f"Tempo de execução: {fim - inicio:.10f} segundos\n")
 
 
 # =============================================================================
@@ -92,17 +112,39 @@ def qtdeNotasRec(m, moedas):
     return menor + 1    
 
 # PRINTS DE TESTE - CÓDIGO 2
-print("=" * 60)
+print("\n" + "=" * 70)
 print("CÓDIGO 2 - RECURSIVO (FORÇA BRUTA)")
-print("=" * 60)
-print(qtdeNotasRec(17, [5, 2, 1]))
+print("=" * 70)
+
+print("Teste 1: qtdeNotasRec(17, [5, 2, 1])")
+inicio = time.time()
+resultado = qtdeNotasRec(17, [5, 2, 1])
+fim = time.time()
+print(f"Resultado: {resultado} moedas")
+print(f"Tempo de execução: {fim - inicio:.10f} segundos")
 print("# Resposta = 4 (três notas de 5 e uma de 2)\n")
 
-print("Teste adicional: qtdeNotasRec(6, [1, 3, 4])")
-print(f"Resultado: {qtdeNotasRec(6, [1, 3, 4])} moedas\n")
+print("Teste 2: qtdeNotasRec(6, [1, 3, 4])")
+inicio = time.time()
+resultado = qtdeNotasRec(6, [1, 3, 4])
+fim = time.time()
+print(f"Resultado: {resultado} moedas")
+print(f"Tempo de execução: {fim - inicio:.10f} segundos\n")
 
-print("Teste adicional: qtdeNotasRec(11, [1, 5, 6])")
-print(f"Resultado: {qtdeNotasRec(11, [1, 5, 6])} moedas\n")
+print("Teste 3: qtdeNotasRec(11, [1, 5, 6])")
+inicio = time.time()
+resultado = qtdeNotasRec(11, [1, 5, 6])
+fim = time.time()
+print(f"Resultado: {resultado} moedas")
+print(f"Tempo de execução: {fim - inicio:.10f} segundos\n")
+
+print("🎯 TESTE COM 35 MOEDAS: qtdeNotasRec(35, [1, 5, 10, 25])")
+print("⚠️  ATENÇÃO: Este teste pode demorar MUITO devido à complexidade exponencial!")
+inicio = time.time()
+resultado = qtdeNotasRec(35, [1, 5, 10, 25])
+fim = time.time()
+print(f"Resultado: {resultado} moedas")
+print(f"Tempo de execução: {fim - inicio:.10f} segundos\n")
 
 
 # =============================================================================
@@ -153,23 +195,48 @@ def qtdeNotasRecMemo(valor, moedas):
     return qtdeM + 1
 
 # PRINTS DE TESTE - CÓDIGO 3
-print("=" * 60)
+print("\n" + "=" * 70)
 print("CÓDIGO 3 - RECURSIVO COM MEMOIZAÇÃO")
-print("=" * 60)
-memo = {}
-print(qtdeNotasRecMemo(17, [5, 2, 1]))
-print(memo)  # guarda todas as chamadas que o sistema fez para achar a menor quantidade de notas
-print()
+print("=" * 70)
 
-memo = {}  # Limpa memo para novo teste
-print("Teste adicional: qtdeNotasRecMemo(6, [1, 3, 4])")
-print(f"Resultado: {qtdeNotasRecMemo(6, [1, 3, 4])} moedas")
+memo = {}
+print("Teste 1: qtdeNotasRecMemo(17, [5, 2, 1])")
+inicio = time.time()
+resultado = qtdeNotasRecMemo(17, [5, 2, 1])
+fim = time.time()
+print(f"Resultado: {resultado} moedas")
+print(f"Tempo de execução: {fim - inicio:.10f} segundos")
+print(f"Subproblemas resolvidos: {len(memo)}")
 print(f"Memo: {memo}\n")
 
 memo = {}  # Limpa memo para novo teste
-print("Teste adicional: qtdeNotasRecMemo(100, [1, 5, 10, 25])")
-print(f"Resultado: {qtdeNotasRecMemo(100, [1, 5, 10, 25])} moedas")
+print("Teste 2: qtdeNotasRecMemo(6, [1, 3, 4])")
+inicio = time.time()
+resultado = qtdeNotasRecMemo(6, [1, 3, 4])
+fim = time.time()
+print(f"Resultado: {resultado} moedas")
+print(f"Tempo de execução: {fim - inicio:.10f} segundos")
+print(f"Subproblemas resolvidos: {len(memo)}")
+print(f"Memo: {memo}\n")
+
+memo = {}  # Limpa memo para novo teste
+print("Teste 3: qtdeNotasRecMemo(100, [1, 5, 10, 25])")
+inicio = time.time()
+resultado = qtdeNotasRecMemo(100, [1, 5, 10, 25])
+fim = time.time()
+print(f"Resultado: {resultado} moedas")
+print(f"Tempo de execução: {fim - inicio:.10f} segundos")
 print(f"Subproblemas resolvidos: {len(memo)}\n")
+
+memo = {}  # Limpa memo para novo teste
+print("🎯 TESTE COM 35 MOEDAS: qtdeNotasRecMemo(35, [1, 5, 10, 25])")
+inicio = time.time()
+resultado = qtdeNotasRecMemo(35, [1, 5, 10, 25])
+fim = time.time()
+print(f"Resultado: {resultado} moedas")
+print(f"Tempo de execução: {fim - inicio:.10f} segundos")
+print(f"Subproblemas resolvidos: {len(memo)}")
+print(f"Memo: {memo}\n")
 
 
 # =============================================================================
@@ -216,25 +283,41 @@ def qtdmoedaspd(m, moedas):
     return memo[m]  # Retorna resultado final para valor m
 
 # PRINTS DE TESTE - CÓDIGO 4
-print("=" * 60)
+print("\n" + "=" * 70)
 print("CÓDIGO 4 - PROGRAMAÇÃO DINÂMICA (BOTTOM-UP)")
-print("=" * 60)
-print(qtdmoedaspd(6, [1, 3, 4]))
-print()
+print("=" * 70)
 
-print("Teste adicional: qtdmoedaspd(17, [5, 2, 1])")
-print(f"Resultado: {qtdmoedaspd(17, [5, 2, 1])} moedas\n")
+print("Teste 1: qtdmoedaspd(6, [1, 3, 4])")
+inicio = time.time()
+resultado = qtdmoedaspd(6, [1, 3, 4])
+fim = time.time()
+print(f"Resultado: {resultado} moedas")
+print(f"Tempo de execução: {fim - inicio:.10f} segundos\n")
 
-print("Teste adicional: qtdmoedaspd(11, [1, 5, 6])")
-print(f"Resultado: {qtdmoedaspd(11, [1, 5, 6])} moedas\n")
+print("Teste 2: qtdmoedaspd(17, [5, 2, 1])")
+inicio = time.time()
+resultado = qtdmoedaspd(17, [5, 2, 1])
+fim = time.time()
+print(f"Resultado: {resultado} moedas")
+print(f"Tempo de execução: {fim - inicio:.10f} segundos\n")
 
-print("Teste adicional: qtdmoedaspd(100, [1, 5, 10, 25])")
-print(f"Resultado: {qtdmoedaspd(100, [1, 5, 10, 25])} moedas\n")
-```
+print("Teste 3: qtdmoedaspd(11, [1, 5, 6])")
+inicio = time.time()
+resultado = qtdmoedaspd(11, [1, 5, 6])
+fim = time.time()
+print(f"Resultado: {resultado} moedas")
+print(f"Tempo de execução: {fim - inicio:.10f} segundos\n")
 
-## Resumo dos Algoritmos
-**Código 1** (Guloso): Rápido mas não garante solução ótima. Tem erro na chamada da função e na condição de comparação.
-**Código 2** (Recursivo): Garante solução ótima mas é muito lento para valores grandes (complexidade exponencial).
-**Código 3** (Memoização): Melhor dos mundos - garante solução ótima com eficiência O(m*n). Ideal para entender o conceito de programação dinâmica.
+print("Teste 4: qtdmoedaspd(100, [1, 5, 10, 25])")
+inicio = time.time()
+resultado = qtdmoedaspd(100, [1, 5, 10, 25])
+fim = time.time()
+print(f"Resultado: {resultado} moedas")
+print(f"Tempo de execução: {fim - inicio:.10f} segundos\n")
 
-**Código 4** (Bottom-up): Mais eficiente em termos de memória que o Código 3, também garante solução ótima com O(m*n).
+print("🎯 TESTE COM 35 MOEDAS: qtdmoedaspd(35, [1, 5, 10, 25])")
+inicio = time.time()
+resultado = qtdmoedaspd(35, [1, 5, 10, 25])
+fim = time.time()
+print(f"Resultado: {resultado} moedas")
+print(f"Tempo de execução: {fim - inicio:.10f} segundos\n")
