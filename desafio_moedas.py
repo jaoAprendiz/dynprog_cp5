@@ -12,28 +12,21 @@ def qtdeMoedas(m, moedas):
         moedas (list): Uma lista de inteiros com os valores das moedas disponíveis.
 
     Returns:
-        int: A quantidade de moedas utilizadas. Retorna -1 se o montante não puder
-             ser formado com as moedas fornecidas.
-
+        int: A quantidade de moedas, que não é garantidamente a mínima.
+        
     Complexidade:
-        - Tempo: O(n log n) devido à ordenação. A iteração é O(n).
-        - Big O: O(n log n)
-        - Big Omega (Ω): Ω(n log n)
-        - Big Theta (Θ): Θ(n log n)
+        - Tempo: O(n log n) devido à ordenação.
     """
     moedas.sort(reverse=True)
     qtd = 0
-    m_restante = m
-    
-    for moeda in moedas:
-        if m_restante == 0:
-            break
-        count = m_restante // moeda
-        if count > 0:
-            qtd += count
-            m_restante -= count * moeda
-            
-    return qtd if m_restante == 0 else -1
+    pos = 0
+    while m > 0 and pos < len(moedas):
+        if m >= moedas[pos]:
+            qtd += 1
+            m = m - moedas[pos]
+        else:
+            pos += 1
+    return qtd
 
 # =============================================================================
 # CÓDIGO 2 - RECURSIVO PURO (FORÇA BRUTA)
@@ -47,67 +40,53 @@ def qtdeMoedasRec(m, moedas):
         moedas (list): Uma lista de inteiros com os valores das moedas disponíveis.
 
     Returns:
-        int: A quantidade mínima de moedas. Retorna -1 se for impossível.
-
+        int: A quantidade mínima de moedas.
+        
     Complexidade:
         - Tempo: Exponencial, O(k^m), onde k é o número de moedas.
-        - Big O: O(k^m)
-        - Big Omega (Ω): Ω(m/c_max) no melhor cenário.
-        - Big Theta (Θ): Θ(k^m)
     """
-    if m == 0:
+    menor = float('INF')
+    if m <= 0:
         return 0
-    if m < 0:
-        return float('inf')
-
-    min_moedas = float('inf')
-    
     for moeda in moedas:
-        res = qtdeMoedasRec(m - moeda, moedas)
-        if res != float('inf'):
-            min_moedas = min(min_moedas, res + 1)
-            
-    return min_moedas if min_moedas != float('inf') else -1
+        if m >= moeda:
+            qtde = qtdeMoedasRec(m - moeda, moedas)
+            if qtde < menor:
+                menor = qtde
+    return menor + 1
 
 # =============================================================================
 # CÓDIGO 3 - RECURSIVO COM MEMOIZAÇÃO (TOP-DOWN)
 # =============================================================================
-def qtdeMoedasRecMemo(m, moedas, memo=None):
+memo = {} # A variável memo é global, conforme o código original
+def qtdeMoedasRecMemo(valor, moedas):
     """
-    Calcula a menor quantidade de moedas usando recursão com memoização (Top-Down).
+    Calcula a menor quantidade de moedas com recursão e memoização.
 
     Args:
-        m (int): O montante a ser trocado.
-        moedas (list): Uma lista de inteiros com os valores das moedas disponíveis.
-        memo (dict): Dicionário para armazenar resultados de subproblemas.
+        valor (int): O montante a ser trocado.
+        moedas (list): Uma lista de inteiros com os valores das moedas.
 
     Returns:
-        int: A quantidade mínima de moedas. Retorna -1 se for impossível.
-
+        int: A quantidade mínima de moedas.
+        
     Complexidade:
         - Tempo: O(m * k), onde k é o número de moedas.
-        - Big O: O(m * k)
-        - Big Omega (Ω): Ω(m)
-        - Big Theta (Θ): Θ(m * k)
     """
-    if memo is None:
-        memo = {}
-    if m in memo:
-        return memo[m]
-    if m == 0:
+    if valor <= 0:
         return 0
-    if m < 0:
-        return float('inf')
-
-    min_moedas = float('inf')
+    if valor in memo:
+        return memo[valor]
     
+    qtdeM = float('inf')
     for moeda in moedas:
-        res = qtdeMoedasRecMemo(m - moeda, moedas, memo)
-        if res != float('inf'):
-            min_moedas = min(min_moedas, res + 1)
-            
-    memo[m] = min_moedas
-    return min_moedas if min_moedas != float('inf') else -1
+        if valor >= moeda:
+            qtde = qtdeMoedasRecMemo(valor - moeda, moedas)
+            if qtde < qtdeM:
+                qtdeM = qtde
+    
+    memo[valor] = qtdeM + 1
+    return qtdeM + 1
 
 # =============================================================================
 # CÓDIGO 4 - PROGRAMAÇÃO DINÂMICA (BOTTOM-UP)
@@ -118,26 +97,23 @@ def qtdeMoedasPD(m, moedas):
 
     Args:
         m (int): O montante a ser trocado.
-        moedas (list): Uma lista de inteiros com os valores das moedas disponíveis.
+        moedas (list): Uma lista de inteiros com os valores das moedas.
 
     Returns:
-        int: A quantidade mínima de moedas. Retorna -1 se for impossível.
-
+        int: A quantidade mínima de moedas.
+        
     Complexidade:
         - Tempo: O(m * k), onde k é o número de moedas.
-        - Big O: O(m * k)
-        - Big Omega (Ω): Ω(m)
-        - Big Theta (Θ): Θ(m * k)
     """
-    dp = [float('inf')] * (m + 1)
-    dp[0] = 0
-    
-    for i in range(1, m + 1):
+    memo_pd = [float('inf')] * (m + 1)
+    memo_pd[0] = 0
+    pos = 1
+    while pos <= m:
         for moeda in moedas:
-            if i - moeda >= 0:
-                dp[i] = min(dp[i], dp[i - moeda] + 1)
-                
-    return int(dp[m]) if dp[m] != float('inf') else -1
+            if moeda <= pos:
+                memo_pd[pos] = min(memo_pd[pos], memo_pd[pos - moeda] + 1)
+        pos += 1
+    return int(memo_pd[m])
 
 # =============================================================================
 # TESTES E COMPARAÇÃO
@@ -145,36 +121,37 @@ def qtdeMoedasPD(m, moedas):
 valor_teste = 35
 moedas_teste = [1, 3, 4]
 
-print(f"Executando testes para M = {valor_teste} com moedas {moedas_teste}")
+print(f"Executando testes para M = {valor_teste} com moedas {moedas_teste}\n")
 
-# Teste 1: Guloso
+# --- Teste 1: Guloso ---
 inicio = time.time()
 res1 = qtdeMoedas(valor_teste, moedas_teste.copy())
 fim = time.time()
-print(f"\n--- Estratégia Gulosa (qtdeMoedas) ---")
+print(f"--- Estratégia Gulosa (qtdeMoedas) ---")
 print(f"Resultado: {res1} moedas")
-print(f"Tempo: {fim - inicio:.10f} s")
+print(f"Tempo: {fim - inicio:.15f} s\n")
 
-# Teste 2: Recursivo Puro
+# --- Teste 2: Recursivo Puro ---
 inicio = time.time()
 res2 = qtdeMoedasRec(valor_teste, moedas_teste)
 fim = time.time()
-print(f"\n--- Recursivo Puro (qtdeMoedasRec) ---")
+print(f"--- Recursivo Puro (qtdeMoedasRec) ---")
 print(f"Resultado: {res2} moedas")
-print(f"Tempo: {fim - inicio:.10f} s (Pode ser muito lento)")
+print(f"Tempo: {fim - inicio:.15f} s\n")
 
-# Teste 3: Memoização
+# --- Teste 3: Memoização ---
+memo.clear()
 inicio = time.time()
 res3 = qtdeMoedasRecMemo(valor_teste, moedas_teste)
 fim = time.time()
-print(f"\n--- Memoização Top-Down (qtdeMoedasRecMemo) ---")
+print(f"--- Memoização Top-Down (qtdeMoedasRecMemo) ---")
 print(f"Resultado: {res3} moedas")
-print(f"Tempo: {fim - inicio:.10f} s")
+print(f"Tempo: {fim - inicio:.15f} s\n")
 
-# Teste 4: PD Bottom-Up
+# --- Teste 4: PD Bottom-Up ---
 inicio = time.time()
 res4 = qtdeMoedasPD(valor_teste, moedas_teste)
 fim = time.time()
-print(f"\n--- PD Bottom-Up (qtdeMoedasPD) ---")
+print(f"--- PD Bottom-Up (qtdeMoedasPD) ---")
 print(f"Resultado: {res4} moedas")
-print(f"Tempo: {fim - inicio:.10f} s")
+print(f"Tempo: {fim - inicio:.15f} s")
