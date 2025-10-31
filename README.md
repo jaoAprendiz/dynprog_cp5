@@ -1,17 +1,3 @@
-Perfeito! Com o código adaptado e os nomes das funções padronizados, aqui está o `README.md` atualizado para o seu repositório do GitHub. Ele segue as instruções do professor e usa os emojis como você pediu.
-
-**Integrantes do Grupo:**
-- João Victor Soave (RM557595)
-- Maria Alice Freitas Araújo (RM557516)
-- Ianny Raquel Ferreira de Souza (RM559090)
-
-***
-
-### README.md para o GitHub
-
-Copie e cole o conteúdo abaixo em um arquivo chamado `README.md` no seu repositório.
-
-````markdown
 # 💰 Análise de Algoritmos para o Problema da Troca de Moedas
 
 Este projeto implementa e compara quatro abordagens algorítmicas para resolver o "Problema da Troca de Moedas" (Coin Change Problem), um clássico problema de otimização. O objetivo é encontrar a menor quantidade de moedas para formar um montante `M` usando um conjunto ilimitado de moedas de determinados valores.
